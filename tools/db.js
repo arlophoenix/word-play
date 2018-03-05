@@ -11,9 +11,11 @@ const knex = require('knex');
 const task = require('./task');
 
 // The list of available commands, e.g. node tools/db.js rollback
+// TODO: <ARLO> these commands violate DRY by being independent from the switch statement below; associate them with the function to run
 const commands = ['version', 'migrate', 'rollback', 'migration', 'seed'];
 const command = process.argv[2];
 
+// TODO: <ARLO> this is redeclared from src/db; why not just export both config and db from that file and use here?
 const config = {
   client: 'pg',
   connection: process.env.DATABASE_URL,

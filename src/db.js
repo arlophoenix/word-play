@@ -9,13 +9,16 @@
 
 import knex from 'knex';
 
-const db = knex({
+const config = {
   client: 'pg',
   connection: process.env.DATABASE_URL,
   migrations: {
     tableName: 'migrations',
   },
   debug: process.env.DATABASE_DEBUG === 'true',
-});
+};
+
+const db = knex(config);
 
 export default db;
+export { config };
