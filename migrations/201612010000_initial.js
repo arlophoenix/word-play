@@ -73,9 +73,29 @@ module.exports.up = async db => {
     table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
     table.primary(['comment_id', 'user_id']);
   });
+
+  await db.schema.createTable('corpus', table => {
+    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
+    table.string('word', 100);
+    table.string('lex', 100);
+  });
+
+  await db.schema.createTable('dictionaries', table => {
+    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
+    table.string('name', 100);
+  });
+
+  await db.schema.createTable('corpus_dictionaries', table => {
+    table.uuid('corpus_id').notNullable().references('id').inTable('corpus').onDelete('CASCADE').onUpdate('CASCADE');
+    table.uuid('dictionary_id').notNullable().references('id').inTable('dictionaries').onDelete('CASCADE').onUpdate('CASCADE');
+    table.primary(['comment_id', 'user_id']);
+  });
 };
 
 module.exports.down = async db => {
+  await db.schema.dropTableIfExists('corpus_dictionaries');
+  await db.schema.dropTableIfExists('dictionaries');
+  await db.schema.dropTableIfExists('corpus');
   await db.schema.dropTableIfExists('comment_points');
   await db.schema.dropTableIfExists('comments');
   await db.schema.dropTableIfExists('story_points');
