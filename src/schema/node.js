@@ -32,7 +32,7 @@ export const { nodeInterface, nodeField, nodesField } = nodeDefinitions(
   obj => {
     switch (getType(obj)) {
       case 'User':
-        return require('./user/UserType').default;
+        return require('./user/UserType').default; // TODO: <ARLO> I tried import-ing instead but it didn't work; why not?
       case 'Email':
         return require('./user/EmailType').default;
       case 'Story':
