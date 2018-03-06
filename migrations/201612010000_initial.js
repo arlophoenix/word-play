@@ -88,7 +88,7 @@ module.exports.up = async db => {
   await db.schema.createTable('corpus_dictionaries', table => {
     table.uuid('corpus_id').notNullable().references('id').inTable('corpus').onDelete('CASCADE').onUpdate('CASCADE');
     table.uuid('dictionary_id').notNullable().references('id').inTable('dictionaries').onDelete('CASCADE').onUpdate('CASCADE');
-    table.primary(['comment_id', 'user_id']);
+    table.primary(['corpus_id', 'dictionary_id']);
   });
 };
 
