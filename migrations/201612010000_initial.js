@@ -7,14 +7,18 @@
 
 // Create database schema for storing user accounts, logins and authentication claims/tokens
 // Source https://github.com/membership/membership.db
-// prettier-ignore
+
 module.exports.up = async db => {
   // User accounts
   await db.schema.createTable('users', table => {
     // UUID v1mc reduces the negative side effect of using random primary keys
     // with respect to keyspace fragmentation on disk for the tables because it's time based
     // https://www.postgresql.org/docs/current/static/uuid-ossp.html
-    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v1mc()'))
+      .primary();
     table.string('display_name', 100);
     table.string('image_url', 200);
     table.string('password_hash', 128);
@@ -23,18 +27,40 @@ module.exports.up = async db => {
 
   // Users' email addresses
   await db.schema.createTable('emails', table => {
-    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
-    table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v1mc()'))
+      .primary();
+    table
+      .uuid('user_id')
+      .notNullable()
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.string('email', 100).notNullable();
-    table.boolean('verified').notNullable().defaultTo(false);
-    table.boolean('primary').notNullable().defaultTo(false);
+    table
+      .boolean('verified')
+      .notNullable()
+      .defaultTo(false);
+    table
+      .boolean('primary')
+      .notNullable()
+      .defaultTo(false);
     table.timestamps(false, true);
     table.unique(['user_id', 'email', 'verified']);
   });
 
   // External logins with security tokens (e.g. Google, Facebook, Twitter)
   await db.schema.createTable('logins', table => {
-    table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+    table
+      .uuid('user_id')
+      .notNullable()
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.string('provider', 16).notNullable();
     table.string('id', 36).notNullable();
     table.string('username', 100);
@@ -45,8 +71,18 @@ module.exports.up = async db => {
   });
 
   await db.schema.createTable('stories', table => {
-    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
-    table.uuid('author_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v1mc()'))
+      .primary();
+    table
+      .uuid('author_id')
+      .notNullable()
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.string('title', 80).notNullable();
     table.string('url', 200);
     table.text('text');
@@ -54,40 +90,103 @@ module.exports.up = async db => {
   });
 
   await db.schema.createTable('story_points', table => {
-    table.uuid('story_id').references('id').inTable('stories').onDelete('CASCADE').onUpdate('CASCADE');
-    table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+    table
+      .uuid('story_id')
+      .references('id')
+      .inTable('stories')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table
+      .uuid('user_id')
+      .notNullable()
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.primary(['story_id', 'user_id']);
   });
 
   await db.schema.createTable('comments', table => {
-    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
-    table.uuid('story_id').notNullable().references('id').inTable('stories').onDelete('CASCADE').onUpdate('CASCADE');
-    table.uuid('parent_id').references('id').inTable('comments').onDelete('CASCADE').onUpdate('CASCADE');
-    table.uuid('author_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v1mc()'))
+      .primary();
+    table
+      .uuid('story_id')
+      .notNullable()
+      .references('id')
+      .inTable('stories')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table
+      .uuid('parent_id')
+      .references('id')
+      .inTable('comments')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table
+      .uuid('author_id')
+      .notNullable()
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.text('text');
     table.timestamps(false, true);
   });
 
   await db.schema.createTable('comment_points', table => {
-    table.uuid('comment_id').references('id').inTable('comments').onDelete('CASCADE').onUpdate('CASCADE');
-    table.uuid('user_id').notNullable().references('id').inTable('users').onDelete('CASCADE').onUpdate('CASCADE');
+    table
+      .uuid('comment_id')
+      .references('id')
+      .inTable('comments')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table
+      .uuid('user_id')
+      .notNullable()
+      .references('id')
+      .inTable('users')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.primary(['comment_id', 'user_id']);
   });
 
   await db.schema.createTable('corpus', table => {
-    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v1mc()'))
+      .primary();
     table.string('word', 100);
     table.string('lex', 100).index();
   });
 
   await db.schema.createTable('dictionaries', table => {
-    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v1mc()'))
+      .primary();
     table.string('name', 100);
   });
 
   await db.schema.createTable('corpus_dictionaries', table => {
-    table.uuid('corpus_id').notNullable().references('id').inTable('corpus').onDelete('CASCADE').onUpdate('CASCADE');
-    table.uuid('dictionary_id').notNullable().references('id').inTable('dictionaries').onDelete('CASCADE').onUpdate('CASCADE');
+    table
+      .uuid('corpus_id')
+      .notNullable()
+      .references('id')
+      .inTable('corpus')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table
+      .uuid('dictionary_id')
+      .notNullable()
+      .references('id')
+      .inTable('dictionaries')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
     table.primary(['corpus_id', 'dictionary_id']);
   });
 };
