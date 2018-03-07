@@ -124,16 +124,23 @@ module.exports.seed = async db => {
   //   ),
   // );
 
-  let lexWordArray = await readLines({ path: './seeds/csw15.list' });
-  console.log(lexWordArray);
-  const chunkSize = 1280; // bind message supplies 2560 parameters; 1 param needed per column
-  while (lexWordArray.length) {
-    console.log(`words remaining: ${lexWordArray.length}`);
-    const chunk = lexWordArray.slice(0, chunkSize);
-    await db.table('corpus').insert(chunk);
-    lexWordArray = lexWordArray.slice(chunkSize);
-  }
 
-  const corpus = await db.table('corpus').count('id');
-  console.log(corpus);
+  const dictionaryIds = await db
+    .table('dictionaries')
+    .insert({ name: 'CSW15' })
+    .returning('id');
+  const dictionaryId = dictionaryIds[0];
+  console.log(dictionaryId);
+  const lexWordArray = await readLines({ path: './seeds/csw15.list' });
+  console.log(lexWordArray);
+  // bind message supplies 2560 parameters; 1 param needed per column
+  const batchSize = 1280;
+  await db
+    .batchInsert('corpus', lexWordArray, batchSize)
+    .returning('id')
+    .then(corpusIds => {
+      const corpusIdToDictionaryId = corpusIds.map(corpusId => ({ corpus_id: corpusId, dictionary_id: dictionaryId }));
+      console.log(corpusIdToDictionaryId);
+      return db.batchInsert('corpus_dictionaries', corpusIdToDictionaryId, batchSize);
+    });
 };
