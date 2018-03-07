@@ -77,7 +77,7 @@ module.exports.up = async db => {
   await db.schema.createTable('corpus', table => {
     table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v1mc()')).primary();
     table.string('word', 100);
-    table.string('lex', 100);
+    table.string('lex', 100).index();
   });
 
   await db.schema.createTable('dictionaries', table => {
