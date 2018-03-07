@@ -80,7 +80,7 @@
     ]
   },
   "scripts": {
-    "precommit": "lint-staged",
+    "precommit": "#lint-staged",
     "lint": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" .",
     "fix": "eslint --ignore-path .gitignore --ignore-pattern \"!**/.*\" --fix .",
     "check": "flow check",
