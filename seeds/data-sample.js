@@ -124,6 +124,46 @@ module.exports.seed = async db => {
   //   ),
   // );
 
+  await db.schema.dropTableIfExists('corpus_dictionaries');
+  await db.schema.dropTableIfExists('dictionaries');
+  await db.schema.dropTableIfExists('corpus');
+
+  await db.schema.createTable('corpus', table => {
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v1mc()'))
+      .primary();
+    table.string('word', 100);
+    table.string('lex', 100).index();
+  });
+
+  await db.schema.createTable('dictionaries', table => {
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v1mc()'))
+      .primary();
+    table.string('name', 100);
+  });
+
+  await db.schema.createTable('corpus_dictionaries', table => {
+    table
+      .uuid('corpus_id')
+      .notNullable()
+      .references('id')
+      .inTable('corpus')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table
+      .uuid('dictionary_id')
+      .notNullable()
+      .references('id')
+      .inTable('dictionaries')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    table.primary(['corpus_id', 'dictionary_id']);
+  });
 
   const dictionaryIds = await db
     .table('dictionaries')
