@@ -57,3 +57,11 @@ export function mapToValues(
     return Array.from(group.values());
   };
 }
+
+export function lexSort(letters: string) {
+  return letters
+    .toLowerCase()
+    .split('')
+    .sort()
+    .join('');
+}
