@@ -9,6 +9,7 @@
 
 import { GraphQLSchema, GraphQLObjectType } from 'graphql';
 
+import corpusQueries from './corpus/queries';
 import userQueries from './user/queries';
 import storyQueries from './story/queries';
 import storyMutations from './story/mutations';
@@ -23,6 +24,7 @@ export default new GraphQLSchema({
       nodes: nodesField,
       ...userQueries,
       ...storyQueries,
+      ...corpusQueries,
     },
   }),
   mutation: new GraphQLObjectType({

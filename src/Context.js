@@ -12,7 +12,7 @@ import type { request as Request } from 'express';
 import type { t as Translator } from 'i18next';
 
 import db from './db';
-import { mapTo, mapToMany, mapToValues } from './utils';
+import { mapTo, mapToMany, mapToValues, lexSort } from './utils';
 import { UnauthorizedError } from './errors';
 
 class Context {
@@ -125,8 +125,25 @@ class Context {
       .then(mapToValues(keys, x => x.id, x => x.count)),
   );
 
+  findWords = new DataLoader(keys =>
+    db
+      .table('corpus')
+      .orderBy('word', 'asc')
+      .whereIn('lex', keys)
+      .select()
+      .then(mapToMany(keys, x => x.lex)),
+  );
+
+  wordById = new DataLoader(keys =>
+    db
+      .table('corpus')
+      .whereIn('id', keys)
+      .select()
+      .then(mapTo(keys, x => x.id)),
+  );
+
   /*
-   * Authenticatinon and permissions.
+   * Authentication and permissions.
    */
 
   ensureIsAuthenticated() {

@@ -25,6 +25,8 @@ export const { nodeInterface, nodeField, nodesField } = nodeDefinitions(
         return context.storyById.load(id).then(assignType('Story'));
       case 'Comment':
         return context.commentById.load(id).then(assignType('Comment'));
+      case 'Word':
+        return context.wordById.load(id).then(assignType('Word'));
       default:
         return null;
     }
@@ -39,6 +41,8 @@ export const { nodeInterface, nodeField, nodesField } = nodeDefinitions(
         return require('./story/StoryType').default;
       case 'Comment':
         return require('./comment/CommentType').default;
+      case 'Word':
+        return require('./corpus/WordType').default;
       default:
         return null;
     }
