@@ -1,12 +1,23 @@
-# Node.js API Starter Kit &nbsp; <a href="https://github.com/kriasoft/nodejs-api-starter/stargazers"><img src="https://img.shields.io/github/stars/kriasoft/nodejs-api-starter.svg?style=social&label=Star&maxAge=3600" height="20"></a> <a href="https://twitter.com/ReactStarter"><img src="https://img.shields.io/twitter/follow/ReactStarter.svg?style=social&label=Follow&maxAge=3600" height="20"></a>
+# Word Play API
 
-Boilerplate and tooling for authoring **data API** backends with **[Node.js][node]** and
-**[GraphQL][gql]**. It is best suited for developing a **GraphQL API** endpoint as a standalone
-(micro)service ([demo][demo]), backing up web front-ends and/or mobile apps (see [React Starter
-Kit][rsk], [React Static Boilerplate][rsb] etc). Please, visit our [sponsors](https://www.paypal.me/koistya):
+GraphQL API for finding valid words from combinations of letters.
 
-<p align="center"><a href="https://rollbar.com/?utm_source=reactstartkit(github)&utm_medium=link&utm_campaign=reactstartkit(github)"><img src="https://koistya.github.io/files/rollbar-247x48.png" height="24" align="top" /></a> <a href="https://x-team.com/?utm_source=reactstarterkit&utm_medium=github-link&utm_campaign=reactstarterkit-june"><img src="https://koistya.github.io/files/xteam-168x48.png" height="24" align="top" /></a><sup><a href="https://x-team.com/join/?utm_source=reactstarterkit&utm_medium=github-link&utm_campaign=reactstarterkit-june">Hiring</a></sup></p>
+### Query support
+#### words(letters:)
+* list valid words which use all input letters
 
+### Dictionary support
+* CSW15
+
+### Roadmap
+* clean up database models
+* database from plain text list of words
+* add support for SOWPODS dictionary
+* decide upon query name scheme
+* publish publically
+* support additional problem solution queries
+  * ninegram
+* support problem generation queries
 
 ---
 
@@ -62,6 +73,7 @@ This project was bootstraped with [Node.js API Starter Kit][nodejskit] ([support
 * [VS Code][code] editor (preferred) + [Project Snippets][vcsnippets],
   [EditorConfig][vceditconfig], [ESLint][vceslint], [Flow][vcflow], and [Prettier][vcprettier]
   plug-ins.
+* [Brew][brew] installed
 
 
 ## Getting Started
@@ -69,8 +81,9 @@ This project was bootstraped with [Node.js API Starter Kit][nodejskit] ([support
 Just clone the repo and run `docker-compose up`:
 
 ```bash
-git clone https://github.com/kriasoft/nodejs-api-starter.git example-api
-cd example-api                  # Change current directory to the newly created one
+brew install nvm jq direnv
+git clone https://github.com/arlophoenix/word-play-api.git
+cd word-play-api                  # Change current directory to the newly created one
 docker-compose up               # Launch Docker containers with the Node.js API app running inside
 ```
 
@@ -154,89 +167,48 @@ deploy your app to a remote server simply run:
 node tools/publish <host>       # where <host> is the name of your web server (see ~/.ssh/config)
 ```
 
-Not sure where to deploy your app? [DigitalOcean][do] is a great choice in many cases (get [$10 credit][do])
-
-
-## Contributing
-
-Anyone and everyone is welcome to [contribute](CONTRIBUTING.md). Start by checking out the list of
-[open issues](https://github.com/kriasoft/nodejs-api-starter/issues) marked
-[help wanted](https://github.com/kriasoft/nodejs-api-starter/issues?q=label:"help+wanted").
-However, if you decide to get involved, please take a moment to review the [guidelines](CONTRIBUTING.md).
-
-
-## Reference Articles and Tutorials
-
-* [Stop using JWT for sessions](http://cryto.net/~joepie91/blog/2016/06/13/stop-using-jwt-for-sessions/)
-  ([Part 2](http://cryto.net/~joepie91/blog/2016/06/19/stop-using-jwt-for-sessions-part-2-why-your-solution-doesnt-work/))
-  by [Sven Slootweg](https://github.com/joepie91)
-* [How to Safely Store Your Users' Passwords](https://paragonie.com/blog/2016/02/how-safely-store-password-in-2016)
-  by [P.I.E.](https://paragonie.com/)
-* [How to set up Node.js API Starter on Windows 10](https://medium.com/@daveyedwards/how-to-setup-kriasofts-nodejs-api-starter-on-windows-10-a092d6e34882)
-  ([video](https://youtu.be/IV4IsYyfdKI)) by [Davey Edwards](https://twitter.com/daveyedwards)
-* [How to call C/C++ code from Node.js](https://medium.com/@tarkus/how-to-call-c-c-code-from-node-js-86a773033892)
-  by [Konstantin Tarkus](https://twitter.com/koistya)
-
-
-## Related Projects
-
-* [GraphQL.js](https://github.com/graphql/graphql-js) — The JavaScript reference implementation for [GraphQL](http://graphql.org/)
-* [DataLoader](https://github.com/facebook/dataloader) — Batching and caching for GraphQL data access layer
-* [React Starter Kit](https://github.com/kriasoft/react-starter-kit) — Isomorphic web app boilerplate (React, Node.js, Babel, Webpack, CSS Modules)
-* [React Static Boilerplate](https://github.com/kriasoft/react-static-boilerplate) — Single-page application (SPA) starter kit (React, Redux, Webpack, Firebase)
-* [Membership Database](https://github.com/membership/membership.db) — SQL schema boilerplate for user accounts, profiles, roles, and auth claims
-
-
-## License
-
-Copyright © 2016-present Kriasoft. This source code is licensed under the MIT license found in the
-[LICENSE.txt](https://github.com/kriasoft/nodejs-api-starter/blob/master/LICENSE.txt) file.
-
----
-Made with ♥ by Konstantin Tarkus ([@koistya](https://twitter.com/koistya), [blog](https://medium.com/@tarkus)) and [contributors](https://github.com/kriasoft/nodejs-api-starter/graphs/contributors)
-
-
-[nodejskit]: https://github.com/kriasoft/nodejs-api-starter
-[rsk]: https://github.com/kriasoft/react-starter-kit
-[rsb]: https://github.com/kriasoft/react-static-boilerplate
-[node]: https://nodejs.org
-[js]: https://developer.mozilla.org/docs/Web/JavaScript
 [babel]: http://babeljs.io/
+[brew]: https://brew.sh/
+[code]: https://code.visualstudio.com/
+[compose]: https://docs.docker.com/compose/
+[cors]: https://github.com/expressjs/cors
+[demo]: https://graphql-demo.kriasoft.com/
+[do]: https://m.do.co/c/eef302dbae9f
+[docker]: https://www.docker.com/community-edition
+[express]: http://expressjs.com/
+[flash]: https://github.com/expressjs/flash
 [flow]: https://flow.org/
-[prettier]: https://prettier.io/
+[gitter]: https://gitter.im/kriasoft/nodejs-api-starter
 [gql]: http://graphql.org/
 [gqljs]: https://github.com/graphql/graphql-js
 [gqlrelay]: https://github.com/graphql/graphql-relay-js
-[yarn]: https://yarnpkg.com
-[demo]: https://graphql-demo.kriasoft.com/
-[express]: http://expressjs.com/
-[session]: https://github.com/expressjs/session
-[flash]: https://github.com/expressjs/flash
-[cors]: https://github.com/expressjs/cors
-[pg]: https://www.postgresql.org/
+[hbs]: http://handlebarsjs.com/
+[i18next]: https://www.i18next.com/
+[i18nextback]: https://github.com/i18next/i18next-node-fs-backend
+[i18nextmid]: https://github.com/i18next/i18next-express-middleware
+[jest]: http://facebook.github.io/jest/
+[js]: https://developer.mozilla.org/docs/Web/JavaScript
+[juice]: https://github.com/Automattic/juice
+[knex]: http://knexjs.org/
+[loader]: https://github.com/facebook/dataloader
+[mailer]: https://nodemailer.com/
+[node]: https://nodejs.org
+[nodejskit]: https://github.com/kriasoft/nodejs-api-starter
 [nodepg]: https://github.com/brianc/node-postgres
+[passport]: http://passportjs.org/
+[pg]: https://www.postgresql.org/
+[prettier]: https://prettier.io/
 [psql]: https://www.postgresql.org/docs/current/static/app-psql.html
-[do]: https://m.do.co/c/eef302dbae9f
-[code]: https://code.visualstudio.com/
-[vcsnippets]: https://marketplace.visualstudio.com/items?itemName=rebornix.project-snippets
+[redis]: https://redis.io/
+[rsb]: https://github.com/kriasoft/react-static-boilerplate
+[rsk]: https://github.com/kriasoft/react-starter-kit
+[session]: https://github.com/expressjs/session
+[v8debug]: https://chromedevtools.github.io/debugger-protocol-viewer/v8/
+[validator]: https://github.com/chriso/validator.js
 [vceditconfig]: https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
 [vceslint]: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
 [vcflow]: https://marketplace.visualstudio.com/items?itemName=flowtype.flow-for-vscode
 [vcprettier]: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
-[docker]: https://www.docker.com/community-edition
-[compose]: https://docs.docker.com/compose/
-[v8debug]: https://chromedevtools.github.io/debugger-protocol-viewer/v8/
+[vcsnippets]: https://marketplace.visualstudio.com/items?itemName=rebornix.project-snippets
 [vsdebug]: https://code.visualstudio.com/Docs/editor/debugging
-[passport]: http://passportjs.org/
-[redis]: https://redis.io/
-[knex]: http://knexjs.org/
-[loader]: https://github.com/facebook/dataloader
-[validator]: https://github.com/chriso/validator.js
-[mailer]: https://nodemailer.com/
-[hbs]: http://handlebarsjs.com/
-[juice]: https://github.com/Automattic/juice
-[i18next]: https://www.i18next.com/
-[i18nextmid]: https://github.com/i18next/i18next-express-middleware
-[i18nextback]: https://github.com/i18next/i18next-node-fs-backend
-[jest]: http://facebook.github.io/jest/
-[gitter]: https://gitter.im/kriasoft/nodejs-api-starter
+[yarn]: https://yarnpkg.com
