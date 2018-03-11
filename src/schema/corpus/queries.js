@@ -7,7 +7,8 @@
 
 /* @flow */
 
-import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLList, GraphQLNonNull, GraphQLString, GraphQLID } from 'graphql';
+import { fromGlobalId } from 'graphql-relay';
 
 import WordType from './WordType';
 import type Context from '../../Context';
@@ -26,6 +27,20 @@ const words = {
   },
 };
 
+const word = {
+  type: WordType,
+  args: {
+    id: {
+      type: new GraphQLNonNull(GraphQLID),
+    },
+  },
+  resolve(root: any, args: any, ctx: Context) {
+    const { id } = fromGlobalId(args.id);
+    return ctx.wordById.load(id);
+  },
+};
+
 export default {
   words,
+  word,
 };
