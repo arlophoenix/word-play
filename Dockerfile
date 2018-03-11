@@ -1,4 +1,4 @@
-FROM node:8.9.3-alpine
+FROM node:"$(jq -r .engines.node package.json)-alpine"
 
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
