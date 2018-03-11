@@ -12,7 +12,7 @@ import type { request as Request } from 'express';
 import type { t as Translator } from 'i18next';
 
 import db from './db';
-import { mapTo, mapToMany, mapToValues, lexSort } from './utils';
+import { mapTo, mapToMany, mapToValues } from './utils';
 import { UnauthorizedError } from './errors';
 
 class Context {

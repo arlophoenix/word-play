@@ -12,7 +12,7 @@ import { fromGlobalId } from 'graphql-relay';
 
 import WordType from './WordType';
 import type Context from '../../Context';
-import { lexSort } from '../../utils';
+import { lexSort } from './utils';
 
 const words = {
   type: new GraphQLList(WordType),

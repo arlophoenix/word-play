@@ -7,14 +7,7 @@
 
 /* eslint-env jest */
 
-import {
-  assignType,
-  getType,
-  mapTo,
-  mapToMany,
-  mapToValues,
-  lexSort,
-} from '../';
+import { assignType, getType, mapTo, mapToMany, mapToValues } from '../';
 
 describe('utils', () => {
   test('assignType()', () => {
@@ -62,9 +55,5 @@ describe('utils', () => {
       { id: 3, name: 'c' },
     ]);
     expect(result).toMatchSnapshot();
-  });
-
-  test('lexSort()', () => {
-    expect(lexSort('Arlo')).toMatchSnapshot();
   });
 });
