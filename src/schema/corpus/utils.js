@@ -2,8 +2,8 @@
 
 // eslint-disable-next-line import/prefer-default-export
 export function lexSort(letters: string) {
-  return letters
-    .toLowerCase()
+  const normalized = letters.toLowerCase().replace(/[^a-z]/g, '');
+  return normalized
     .split('')
     .sort()
     .join('');

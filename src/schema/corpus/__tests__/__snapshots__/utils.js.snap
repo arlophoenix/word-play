@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`lexSort() 1`] = `"alor"`;
+
+exports[`lexSort() 2`] = `"ahstw"`;
