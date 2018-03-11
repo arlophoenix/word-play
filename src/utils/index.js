@@ -58,6 +58,7 @@ export function mapToValues(
   };
 }
 
+// TODO: <ARLO> refactor: move to schema/corpus/utils? this function should live with the queries that use it. It is unrelated to DB utils
 export function lexSort(letters: string) {
   return letters
     .toLowerCase()
