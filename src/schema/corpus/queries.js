@@ -13,7 +13,7 @@ import WordType from './WordType';
 import type Context from '../../Context';
 import { lexSort } from '../../utils';
 
-const findWord = {
+const words = {
   type: new GraphQLList(WordType),
   args: {
     letters: {
@@ -27,5 +27,5 @@ const findWord = {
 };
 
 export default {
-  findWord,
+  words,
 };
